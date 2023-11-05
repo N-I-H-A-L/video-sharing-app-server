@@ -13,12 +13,12 @@ router.put('/:videoId', verifyToken, updateVideo);
 //Deleting a video
 router.delete('/:videoId', verifyToken, deleteVideo);
 //Updating number of views of video
-router.put('/view/:videoId', updateViews);
+router.put('/view/:videoId', verifyToken, updateViews);
 //Get trending videos
-router.get('/trend', trendingVideos);
+router.get('/trend', verifyToken, trendingVideos);
 //Get random videos (for Home page)
-router.get('/random', randomVideos);
+router.get('/random', verifyToken, randomVideos);
 //Get videos of subscribed channels
-router.get('/subscribed', subVideos);
+router.get('/subscribed', verifyToken, subVideos);
 
 export default router;
