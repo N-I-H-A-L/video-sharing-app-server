@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import videoRoutes from "./routes/videoRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 dotenv.config();
@@ -15,14 +16,16 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch((err)=>console.log(err));
 
 app.use(cors());
+app.use(cookieParser()); //To be able to use cookies.
 app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/video", videoRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/auth", authRoutes);
 
-//Default Error Handler function
+//Error Handler function
 app.use((err, req, res, next)=>{
+    //If status code is not provided set it to 500.
     const status = err.status || 500;
     const message = err.message || "Something went wrong!";
     return res.status(status).json({
