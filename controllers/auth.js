@@ -45,7 +45,7 @@ export const signIn = async (req, res, next) => {
         //First argument is the payload, value which is to be encoded and second argument is the secret key.
         const token = jwt.sign({id:getUser._id}, process.env.JWT_SECRET);
         
-        //Store the token in the cookies so Client side will be able to detect whether user is logged in or not.
+        //Store the token in the cookies
         res.cookie("access_token", token, {
             httpOnly: true
         }).status(200).json(getUser);
