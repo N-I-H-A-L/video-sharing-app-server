@@ -128,3 +128,40 @@ export const subVideos = async (req, res, next)=>{
         next(err);
     }
 }
+
+export const getVideosByTags = async (req, res, next) =>{
+    //The tags will be sent as 'query' in the URL.
+    //For example: localhost:5000/api/video/tags?tags=java,python,c
+    const tags = req.query.tags.split(",");
+    
+    //console.log(req.query.tags);
+    //Output: java,python,c
+    //Then it will be splitted by "," and stored like an array:
+    // console.log(tags);
+    // [ 'java', 'python', 'c' ]
+
+    try{
+        //Get all the videos which contain the "tags" (of query) inside their own "tags" object. And limit the output to 20 items. Even if one of the tags will be present, it will include it.
+        const videos = await Video.find({ tags: {$in: tags} }).limit(20);
+        res.status(200).json(videos);
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+export const searchVideos = async (req, res, next) =>{
+    //It will search videos on the basis of title of the video.
+    const query = req.query.q;
+    try{
+        const videos = await Video.find({
+            title: { $regex: query, $options: "i" },
+        }).limit(40); 
+        //$options: "i" -> ignore the case of letters (uppercase or lowercase)
+        //$regex: query -> it will find the videos with title containing exactly the "query".
+        res.status(200).json(videos);
+    }
+    catch(err){
+        next(err);
+    }
+}
