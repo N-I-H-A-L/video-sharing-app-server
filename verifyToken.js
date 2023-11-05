@@ -13,7 +13,6 @@ export const verifyToken = async (req, res, next) =>{
         if(err) return next(errorHandler(403, "Invalid Token!"));
         //If token is valid, "user" will contain the decoded information which was stored as token. 
         req.user = user;
-
         //next() will execute the next handler function for the route. 
         //For example if route is: router.put("/:id", verifyToken, updateUser);
         //Then next() will execute the updateUser function.

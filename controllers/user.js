@@ -14,7 +14,7 @@ export const updateUser = async (req, res, next) =>{
             res.status(200).json(updatedUser);
         }
         catch(err){
-            return next(err);
+            next(err);
         }
     }
     else{
@@ -23,25 +23,97 @@ export const updateUser = async (req, res, next) =>{
 }
 
 export const deleteUser = async (req, res, next) =>{
-    
+    const id = req.user.id;
+    if(req.params.id===id){
+        try{
+            await User.findByIdAndDelete(id);
+            res.status(200).json({
+                success: true,
+                message: "User has been deleted successfully."
+            });
+        }
+        catch(err){
+            next(err);
+        }
+    }
+    else{
+        return next(errorHandler(403, "You can delete only your account."));
+    }
 }
 
 export const getUser = async (req, res, next) =>{
-    
+    try{
+        const id = req.params.id;
+        const user = await User.findById(id);
+        res.status(200).json(user);
+    }
+    catch(err){
+        next(err);
+    }
 }
 
 export const subUser = async (req, res, next) =>{
-    
+    try{
+        //The logged in user. 
+        //Note: User should be logged in before subscribing.
+        const id = req.user.id;
+        //The user (or channel), the logged in user wants to subscribe to.
+        const toSubscribe = req.params.id;
+
+        await User.findByIdAndUpdate(id, {
+            //In the list of subscribedUsers of the logged in user, add the ID of the channel to which the user is subscribing to.
+            $push: {subscribedUsers: toSubscribe},
+        });
+
+        await User.findByIdAndUpdate(toSubscribe, {
+            //Increment the subscribers by 1 of the user who got subscribed.
+            $inc: {subscribers: 1}
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Subscription successful."
+        });
+    }
+    catch(err){
+        next(err);
+    }
 }
 
 export const unsubUser = async (req, res, next) =>{
-    
+    try{
+        const id = req.user.id;
+        const toSubscribe = req.params.id;
+        await User.findByIdAndUpdate(id, {
+            $pull: {subscribedUsers: toSubscribe},
+        });
+        await User.findByIdAndUpdate(toSubscribe, {
+            $inc: {subscribers: -1}
+        });
+        res.status(200).json({
+            success: true,
+            message: "Unsubscription successful."
+        });
+    }
+    catch(err){
+        next(err);
+    }
 }
 
 export const likeVideo = async (req, res, next) =>{
-    
+    try{
+
+    }
+    catch(err){
+        next(err);
+    }
 }
 
 export const dislikeVideo = async (req, res, next) =>{
-    
+    try{
+
+    }
+    catch(err){
+        next(err);
+    }
 }
