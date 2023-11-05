@@ -83,11 +83,13 @@ export const subUser = async (req, res, next) =>{
 export const unsubUser = async (req, res, next) =>{
     try{
         const id = req.user.id;
-        const toSubscribe = req.params.id;
+        const toUnsubscribe = req.params.id;
         await User.findByIdAndUpdate(id, {
-            $pull: {subscribedUsers: toSubscribe},
+            //'Pull' or remove the ID of the channel from the subscribedUsers list of the logged in user.
+            $pull: {subscribedUsers: toUnsubscribe},
         });
-        await User.findByIdAndUpdate(toSubscribe, {
+        await User.findByIdAndUpdate(toUnsubscribe, {
+            //Increment the number of subscribers by -1 (or decrement).
             $inc: {subscribers: -1}
         });
         res.status(200).json({
