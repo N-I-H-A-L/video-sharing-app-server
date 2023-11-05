@@ -26,6 +26,6 @@ const userSchema = new mongoose.Schema({
         //List of channels subscribed to
         type: [String]
     } 
-}, {timestamps: true}); //It will store the timestamps of creation.
+}, {timestamps: true}); //It will store the timestamps of creation and updation.
 
 export default mongoose.model("User", userSchema);
