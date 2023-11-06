@@ -1,5 +1,6 @@
 import { errorHandler } from "../error.js";
 import User from "../models/User.js"
+import Video from "../models/Video.js";
 
 export const updateUser = async (req, res, next) =>{
     //req.user will contain the ID of the user sent by verifyToken.
@@ -103,8 +104,19 @@ export const unsubUser = async (req, res, next) =>{
 }
 
 export const likeVideo = async (req, res, next) =>{
+    const user = req.user.id;
+    const video = req.params.videoId;
     try{
-
+        await Video.findByIdAndUpdate(video, {
+            $addToSet: {likes: user}, 
+            //addToSet method adds the provided element only if it's not already present in the array. As the name says, add to "set", add unique elements. So even if the same user calls for the "like" route again and again, it's ID will only be added once.
+            $pull: {dislikes: user}
+            //Pull user's ID from the dislikes array. User may have disliked the video before liking, so.
+        });
+        res.status(200).send({
+            success: true,
+            message: "Video has been liked."
+        });
     }
     catch(err){
         next(err);
@@ -112,8 +124,17 @@ export const likeVideo = async (req, res, next) =>{
 }
 
 export const dislikeVideo = async (req, res, next) =>{
+    const user = req.user.id;
+    const video = req.params.videoId;
     try{
-
+        await Video.findByIdAndUpdate(video, {
+            $addToSet: {dislikes: user}, 
+            $pull: {likes: user}
+        });
+        res.status(200).send({
+            success: true,
+            message: "Video has been disliked."
+        });
     }
     catch(err){
         next(err);
