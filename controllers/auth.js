@@ -10,11 +10,13 @@ export const signUp = async (req, res, next) => {
         const hash = bcrypt.hashSync(req.body.password, salt);
 
         //Encrypted password will be stored in the database. 
-        await User.create({...req.body, password: hash});
-        res.status(200).json({
-            success: "true",
-            message: "User created successfully"
-        });
+        await User.create({...req.body, password: hash})
+            .then((result)=>{
+                res.status(200).json(result);
+            })
+            .catch((err)=>{
+                res.status(401).json(err);
+            });
     }
     catch(err){
         //It will trigger the Error Handling Middleware of server.js file.

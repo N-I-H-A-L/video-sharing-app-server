@@ -15,11 +15,13 @@ export const getVideo = async (req, res, next) =>{
 
 export const addVideo = async (req, res, next) =>{
     try{
-        await Video.create({userId: req.user, ...req.body});
-        res.status(200).json({
-            "success": true,
-            "message": "Video added successfully."
-        });
+        await Video.create({userId: req.user, ...req.body})
+            .then((result)=>{
+                res.status(200).json(result);
+            })
+            .catch((err)=>{
+                res.status(401).json(err);
+            });
     }
     catch(err){
         next(err);
