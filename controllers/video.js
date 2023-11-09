@@ -6,7 +6,7 @@ export const getVideo = async (req, res, next) =>{
     try{
         const getVideo = await Video.findById(req.params.videoId);
         if(!getVideo) return next(errorHandler(404, "Video not found!"));
-        res.send(200).json(getVideo);
+        res.status(200).json(getVideo);
     }
     catch(err){
         next(err);
@@ -15,7 +15,7 @@ export const getVideo = async (req, res, next) =>{
 
 export const addVideo = async (req, res, next) =>{
     try{
-        await Video.create({userId: req.user, ...req.body})
+        await Video.create({userId: req.user.id, ...req.body})
             .then((result)=>{
                 res.status(200).json(result);
             })
@@ -30,7 +30,7 @@ export const addVideo = async (req, res, next) =>{
 
 export const deleteVideo = async (req, res, next) =>{
     try{
-        const getVideo = Video.findById(req.params.videoId);
+        const getVideo = await Video.findById(req.params.videoId);
         if(!getVideo) return next(errorHandler(404, "Video not found!"));
 
         //If the video belongs to the logged in user then only the user can update the video.
@@ -75,14 +75,15 @@ export const updateViews = async (req, res, next)=>{
     try{
         const getVideo = await Video.findById(req.params.videoId);
         if(!getVideo) return next(errorHandler(404, "Video not found!"));
-
-        await Video.findByIdAndUpdate(req.params.videoId, {
-            $inc: {views: 1}
-        });
-        res.json(200).send({
-            success: true,
-            message: "Updated views successfully."
-        });
+        else{
+            await Video.findByIdAndUpdate(req.params.videoId, {
+                $inc: {views: 1}
+            });
+            res.status(200).json({
+                success: true,
+                message: "Updated views successfully."
+            });
+        }
     }
     catch(err){
         next(err);

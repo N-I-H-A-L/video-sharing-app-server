@@ -20,7 +20,7 @@ router.get('/trend', verifyToken, trendingVideos);
 router.get('/random', verifyToken, randomVideos);
 //Get videos of subscribed channels
 router.get('/subscribed', verifyToken, subVideos);
-
+//Get videos by tags
 router.get('/tags', verifyToken, getVideosByTags);
 //Search videos by title
 router.get('/search', verifyToken, searchVideos);
