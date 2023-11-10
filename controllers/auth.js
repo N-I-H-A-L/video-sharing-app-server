@@ -57,6 +57,32 @@ export const signIn = async (req, res, next) => {
     }
 };
 
-export const googleAuth = (req, res) => {
-
+export const googleAuth = async (req, res, next) => {
+    try{
+        const user = await User.findOne({email: req.body.email});
+        //If user is already present in database.
+        if(user){
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+        
+            res.cookie("access_token", token, {
+                httpOnly: true
+            }).status(200).json(user);
+        }
+        //Else create new user.
+        else{
+            const newUser = new User({
+                ...req.body,
+                fromGoogle: true,
+            });
+            const savedUser = await newUser.save();
+            const token = jwt.sign({id: savedUser._id}, process.env.JWT_SECRET);
+        
+            res.cookie("access_token", token, {
+                httpOnly: true
+            }).status(200).json(savedUser);
+        }
+    }
+    catch(err){
+        next(err);
+    }
 };

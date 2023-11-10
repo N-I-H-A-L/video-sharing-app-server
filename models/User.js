@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type: String,
-        required: true,
     },
     img:{
         type: String
@@ -25,6 +24,10 @@ const userSchema = new mongoose.Schema({
     subscribedUsers:{
         //List of channels subscribed to
         type: [String]
+    },
+    fromGoogle:{
+        type: Boolean,
+        default: false,
     } 
 }, {timestamps: true}); //It will store the timestamps of creation and updation.
 
