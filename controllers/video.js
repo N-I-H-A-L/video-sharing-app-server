@@ -118,14 +118,22 @@ export const subVideos = async (req, res, next)=>{
         //Get the list of subscribedChannels by the logged in user.
         const subscribedChannels = user.subscribedUsers;
 
-        //Create a list of all the videos of the subscribedChannels.
-        const list = await Promise.all(
-            subscribedChannels.map(async (channelId)=>{
-                //Add the videos of channel to the list.
-                return await Video.find({userId: channelId});
-            })
-        );
-        res.status(200).json(list);
+        let listOfVideos = [];
+        const videoPromises = subscribedChannels.map(async (channelId) => {
+        // Add the videos of channel to the list.
+        let videos = await Video.find({ userId: channelId });
+        listOfVideos.push(...videos);
+        });
+
+        // Use Promise.all to await all the videoPromises
+        Promise.all(videoPromises)
+        .then(() => {
+            res.status(200).json(listOfVideos);
+        })
+        .catch((error) => {
+            // Handle any errors that occurred during Video.find
+            console.error(error);
+        });
     }
     catch(err){
         next(err);

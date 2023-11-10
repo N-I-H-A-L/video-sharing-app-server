@@ -15,14 +15,14 @@ router.delete('/:videoId', verifyToken, deleteVideo);
 //Updating number of views of video
 router.put('/view/:videoId', verifyToken, updateViews);
 //Get trending videos
-router.get('/trend', verifyToken, trendingVideos);
+router.get('/trend', trendingVideos);
 //Get random videos (for Home page)
-router.get('/random', verifyToken, randomVideos);
+router.get('/random', randomVideos);
 //Get videos of subscribed channels
 router.get('/subscribed', verifyToken, subVideos);
 //Get videos by tags
 router.get('/tags', verifyToken, getVideosByTags);
 //Search videos by title
-router.get('/search', verifyToken, searchVideos);
+router.get('/search', searchVideos);
 
 export default router;

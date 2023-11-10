@@ -15,7 +15,17 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(()=>console.log("DB Connected"))
     .catch((err)=>console.log(err));
 
-app.use(cors());
+const corsoptions = {
+    //to allow requests from client
+    origin: [
+        "http://localhost:3000",
+        "http://127.0.0.1",
+    ],
+    credentials: true,
+    //credentials should be true for setting cookies.
+};
+
+app.use(cors(corsoptions));
 app.use(cookieParser()); //To be able to use cookies.
 app.use(express.json());
 app.use("/api/user", userRoutes);
