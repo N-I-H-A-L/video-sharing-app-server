@@ -11,6 +11,8 @@ import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
+
 mongoose.connect(process.env.MONGODB_URI)
     .then(()=>console.log("DB Connected"))
     .catch((err)=>console.log(err));
@@ -20,10 +22,15 @@ const corsoptions = {
     origin: [
         "http://localhost:3000",
         "http://127.0.0.1",
+        "https://video-sharing-app-eight.vercel.app/",
     ],
     credentials: true,
     //credentials should be true for setting cookies.
 };
+
+app.get('/', (req, res)=>{
+    res.status(200).send("Server is up and running!");
+});
 
 app.use(cors(corsoptions));
 app.use(cookieParser()); //To be able to use cookies.
@@ -44,6 +51,6 @@ app.use((err, req, res, next)=>{
     });
 });
 
-app.listen(5000, ()=>{
+app.listen(PORT, ()=>{
     console.log("Server connected");
 });
