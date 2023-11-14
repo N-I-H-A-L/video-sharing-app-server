@@ -19,7 +19,12 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const corsoptions = {
     //to allow requests from client
-    origin: "*",
+    origin: [
+        "http://localhost:3000",
+        "http://127.0.0.1",
+        "https://video-sharing-app-eight.vercel.app",
+        "https://video-sharing-2k6ztdfj8-n-i-h-a-l.vercel.app",
+    ],
     credentials: true,
     //credentials should be true for setting cookies.
 };
