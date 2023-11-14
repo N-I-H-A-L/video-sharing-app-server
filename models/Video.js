@@ -23,8 +23,8 @@ const VideoSchema = new mongoose.Schema(
       required: true,
     },
     views: {
-      type: Number,
-      default: 0,
+      type: [String], //User IDs of users who viewed the video.
+      default: [],
     },
     tags: {
       type: [String],

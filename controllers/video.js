@@ -76,8 +76,9 @@ export const updateViews = async (req, res, next)=>{
         const getVideo = await Video.findById(req.params.videoId);
         if(!getVideo) return next(errorHandler(404, "Video not found!"));
         else{
+            const userId = req.user.id;
             await Video.findByIdAndUpdate(req.params.videoId, {
-                $inc: {views: 1}
+                $addToSet: { views: userId } 
             });
             res.status(200).json({
                 success: true,
