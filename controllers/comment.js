@@ -44,7 +44,8 @@ export const deleteComment = async (req, res, next) =>{
 export const getComments = async (req, res, next) =>{
     try{
         //Get the comments whose videoId matches with the videoId sent as params.
-        const comments = await Comment.find({videoId: req.params.videoId});
+        const comments = await Comment.find({videoId: req.params.videoId}).sort({'createdAt': -1});
+        //Comments will be sorted according to their creation time. 
         res.status(200).json(comments);
     }
     catch(err){

@@ -7,7 +7,7 @@ const router = express.Router();
 //Adding a video
 router.post('/', verifyToken, addVideo);
 //Getting a video
-router.get('/find/:videoId', verifyToken, getVideo);
+router.get('/find/:videoId', getVideo);
 //Updating a video
 router.put('/:videoId', verifyToken, updateVideo);
 //Deleting a video
@@ -21,7 +21,7 @@ router.get('/random', randomVideos);
 //Get videos of subscribed channels
 router.get('/subscribed', verifyToken, subVideos);
 //Get videos by tags
-router.get('/tags', verifyToken, getVideosByTags);
+router.get('/tags', getVideosByTags);
 //Search videos by title
 router.get('/search', searchVideos);
 
