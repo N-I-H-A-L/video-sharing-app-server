@@ -14,7 +14,8 @@ export const signUp = async (req, res, next) => {
             .then((result)=>{
                 const token = jwt.sign({id: result._id}, process.env.JWT_SECRET);
                 res.cookie("access_token", token, {
-                    httpOnly: true
+                    httpOnly: true,
+                    sameSite: "none"
                 }).status(200).json(result);
             })
             .catch((err)=>{
@@ -52,7 +53,8 @@ export const signIn = async (req, res, next) => {
         
         //Store the token in the cookies
         res.cookie("access_token", token, {
-            httpOnly: true
+            httpOnly: true,
+            sameSite: "none"
         }).status(200).json(getUser);
     }
     catch(err){
@@ -68,7 +70,8 @@ export const googleAuth = async (req, res, next) => {
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
         
             res.cookie("access_token", token, {
-                httpOnly: true
+                httpOnly: true,
+                sameSite: "none"
             }).status(200).json(user);
         }
         //Else create new user.
@@ -81,7 +84,8 @@ export const googleAuth = async (req, res, next) => {
             const token = jwt.sign({id: savedUser._id}, process.env.JWT_SECRET);
         
             res.cookie("access_token", token, {
-                httpOnly: true
+                httpOnly: true,
+                sameSite: "none"
             }).status(200).json(savedUser);
         }
     }
