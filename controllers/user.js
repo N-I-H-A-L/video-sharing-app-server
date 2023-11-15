@@ -140,3 +140,15 @@ export const dislikeVideo = async (req, res, next) =>{
         next(err);
     }
 }
+
+export const updateProfile = async (req, res, next) =>{
+    try{
+        const updated = await User.findByIdAndUpdate(req.user.id, {
+            img: req.body.img
+        }, {new: true});
+        res.status(200).json(updated);
+    }
+    catch(err){
+        next(err);
+    }
+}

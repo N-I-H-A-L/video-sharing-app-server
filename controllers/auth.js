@@ -12,7 +12,10 @@ export const signUp = async (req, res, next) => {
         //Encrypted password will be stored in the database. 
         await User.create({...req.body, password: hash})
             .then((result)=>{
-                res.status(200).json(result);
+                const token = jwt.sign({id: result._id}, process.env.JWT_SECRET);
+                res.cookie("access_token", token, {
+                    httpOnly: true
+                }).status(200).json(result);
             })
             .catch((err)=>{
                 res.status(401).json(err);
