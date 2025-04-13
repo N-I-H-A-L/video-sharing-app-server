@@ -1,0 +1,38 @@
+# Name of our workflow
+name: Backend deploy
+
+on:
+  push:
+    branches:
+      - '**'  # Trigger on all branches
+  pull_request:
+    branches:
+      - '**'  # Trigger on PRs to all branches
+
+# List of jobs
+# A "job" is a set of steps that are executed on the same runner
+jobs:
+  # Name of the job
+  test:
+    # Operating system to run on
+    runs-on: ubuntu-latest
+
+    # List of steps that make up the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Setup Node.js environment
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.x'
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Run tests using Vitest
+    - name: Run tests
+      run: npm test
