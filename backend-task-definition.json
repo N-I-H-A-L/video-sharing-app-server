@@ -1,0 +1,45 @@
+{
+  "family": "video-sharing-backend-task",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "761018889513.dkr.ecr.ap-south-1.amazonaws.com/video-sharing-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "name": "backend-5000-tcp",
+          "containerPort": 5000,
+          "hostPort": 5000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "JWT_SECRET",
+          "value": "kaf8734hfn89g3"
+        },
+        {
+          "name": "MONGODB_URI",
+          "value": "mongodb+srv://admin:uvMVep8T6azRkUpW@cluster0.montnjd.mongodb.net/"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/video-sharing-backend-task",
+          "mode": "non-blocking",
+          "awslogs-create-group": "true",
+          "max-buffer-size": "25m",
+          "awslogs-region": "ap-south-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "3072",
+  "executionRoleArn": "arn:aws:iam::761018889513:role/ecsTaskExecutionRole"
+}
