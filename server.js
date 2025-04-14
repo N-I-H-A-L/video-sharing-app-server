@@ -58,7 +58,6 @@ app.use("/api/auth", authRoutes);
 
 //Error Handler function
 app.use((err, req, res, next) => {
-  //If status code is not provided set it to 500.
   const status = err.status || 500;
   const message = err.message || "Something went wrong!";
   return res.status(status).json({
