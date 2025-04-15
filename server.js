@@ -39,6 +39,7 @@ const corsoptions = {
     "http://127.0.0.1",
     "https://video-sharing-app-eight.vercel.app",
     "https://video-sharing-2k6ztdfj8-n-i-h-a-l.vercel.app",
+    "http://video-sharing-frontend-deployment.s3-website.ap-south-1.amazonaws.com",
   ],
   credentials: true,
   //credentials should be true for setting cookies.
